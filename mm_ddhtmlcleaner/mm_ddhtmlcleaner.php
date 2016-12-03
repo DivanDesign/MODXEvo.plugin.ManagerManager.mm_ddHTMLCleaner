@@ -5,25 +5,31 @@
  * 
  * @desc A widget for the plugin ManagerManager. It removes forbidden HTML attributes and styles from document fields and TVs when required.
  * 
- * @uses ManagerManager plugin 0.6.
+ * @uses MODXEvo.plugin.ManagerManager >= 0.6.
  * 
- * @param $fields {comma separated string} - The name(s) of the document fields (or TVs) which the widget is applied to. @required
- * @param $roles {comma separated string} - Roles that the widget is applied to (when this parameter is empty then widget is applied to the all roles). Default: ''.
- * @param $templates {comma separated string} - Templates IDs for which the widget is applying (empty value means the widget is applying to all templates). Default: ''.
- * @param $validAttrsForAllTags {comma separated string} - Default: 'title,class'.
- * @param $validStyles {comma separated string} - Default: 'word-spacing'.
- * @param $validAttrs {string: JSON} - Default: '{"img":"src,alt,width,height","a":"href,target"}'.
+ * @param $fields {string_commaSeparated} — The name(s) of the document fields (or TVs) which the widget is applied to. @required
+ * @param $roles {string_commaSeparated} — Roles that the widget is applied to (when this parameter is empty then widget is applied to the all roles). Default: ''.
+ * @param $templates {string_commaSeparated} — Templates IDs for which the widget is applying (empty value means the widget is applying to all templates). Default: ''.
+ * @param $validAttrsForAllTags {string_commaSeparated} — Attributes that can be applied to all HTML tags. The others will be removed. Default: 'title,class'.
+ * @param $validStyles {string_commaSeparated} — Valid styles that have not to be cut from the style attribute. Default: 'word-spacing'.
+ * @param $validAttrs {string_JSON_object} — A JSON object containing valid attributes (set as comma separated values) which have not to be removed from corresponding HTML tags (set as keys). Default: '{"img":"src,alt,width,height","a":"href,target"}'.
  * 
  * @event OnDocFormPrerender
  * @event OnDocFormRender
  * 
  * @link http://code.divandesign.biz/modx/mm_ddhtmlcleaner/1.0.4
  * 
- * @copyright 2014, DivanDesign
- * http://www.DivanDesign.biz
+ * @copyright 2013–2014 DivanDesign {@link http://www.DivanDesign.biz }
  */
 
-function mm_ddHTMLCleaner($fields, $roles = '', $templates = '', $validAttrsForAllTags = 'title,class', $validStyles = 'word-spacing', $validAttrs = '{"img":"src,alt,width,height","a":"href,target"}'){
+function mm_ddHTMLCleaner(
+	$fields,
+	$roles = '',
+	$templates = '',
+	$validAttrsForAllTags = 'title,class',
+	$validStyles = 'word-spacing',
+	$validAttrs = '{"img":"src,alt,width,height","a":"href,target"}'
+){
 	if (!useThisRule($roles, $templates)){return;}
 	
 	global $modx;
@@ -50,7 +56,7 @@ function mm_ddHTMLCleaner($fields, $roles = '', $templates = '', $validAttrsForA
 			$selectors[] = $mm_fields[$field]['fieldtype'].'[name=\"'.$mm_fields[$field]['fieldname'].'\"]';
 		}
 		
-		$output = "//---------- mm_ddHTMLCleaner :: Begin -----\n";
+		$output = '//---------- mm_ddHTMLCleaner :: Begin -----'.PHP_EOL;
 		
 		$output .=
 '
@@ -61,7 +67,7 @@ $j.ddMM.mm_ddHTMLCleaner.addInstance("'.implode(',', $selectors).'", {
 });
 ';
 		
-		$output .= "//---------- mm_ddHTMLCleaner :: End -----\n";
+		$output .= '//---------- mm_ddHTMLCleaner :: End -----'.PHP_EOL;
 		
 		$e->output($output);
 	}

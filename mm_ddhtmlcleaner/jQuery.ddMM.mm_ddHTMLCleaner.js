@@ -1,12 +1,12 @@
 /**
- * jQuery ddMM.mm_ddHTMLCleaner Plugin
- * @version: 1.0.1 (2013-12-10)
+ * jQuery.ddMM.mm_ddHTMLCleaner
+ * @version 1.0.1 (2013-12-10)
  * 
- * @uses jQuery 1.10.2
- * @uses $.ddMM 1.1.2
- *
- * @copyright 2013, DivanDesign
- * http://www.DivanDesign.biz
+ * @uses jQuery 1.10.2.
+ * @uses jQuery.ddMM 1.1.2.
+ * @uses jQuery.ddHTMLCleaner 0.2.
+ * 
+ * @copyright 2013 [DivanDesign]{@link http://www.DivanDesign.biz }
  */
 
 (function($){
