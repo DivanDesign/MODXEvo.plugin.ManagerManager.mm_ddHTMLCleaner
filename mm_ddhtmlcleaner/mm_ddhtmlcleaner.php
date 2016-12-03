@@ -32,8 +32,8 @@ function mm_ddHTMLCleaner($fields, $roles = '', $templates = '', $validAttrsForA
 	if ($e->name == 'OnDocFormPrerender'){
 		$widgetDir = $modx->config['site_url'].'assets/plugins/managermanager/widgets/mm_ddhtmlcleaner/';
 		
-		$output = includeJsCss($widgetDir.'jquery.ddHTMLCleaner-0.2.min.js', 'html', 'jquery.ddHTMLCleaner', '0.2');
-		$output .= includeJsCss($widgetDir.'jquery.ddMM.mm_ddHTMLCleaner.js', 'html', 'jquery.ddMM.mm_ddHTMLCleaner', '1.0.1');
+		$output = includeJsCss($widgetDir.'jQuery.ddHTMLCleaner-0.2.min.js', 'html', 'jQuery.ddHTMLCleaner', '0.2');
+		$output .= includeJsCss($widgetDir.'jQuery.ddMM.mm_ddHTMLCleaner.js', 'html', 'jQuery.ddMM.mm_ddHTMLCleaner', '1.0.1');
 		
 		$e->output($output);
 	}else if ($e->name == 'OnDocFormRender'){
