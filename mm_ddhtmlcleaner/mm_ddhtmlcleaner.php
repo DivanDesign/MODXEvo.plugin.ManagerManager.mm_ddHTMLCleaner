@@ -5,14 +5,16 @@
  * 
  * @desc A widget for the plugin ManagerManager. It removes forbidden HTML attributes and styles from document fields and TVs when required.
  * 
- * @uses MODXEvo.plugin.ManagerManager >= 0.6.
+ * @uses PHP >= 5.4.
+ * @uses MODXEvo.plugin.ManagerManager >= 0.7.
  * 
- * @param $fields {string_commaSeparated} — The name(s) of the document fields (or TVs) which the widget is applied to. @required
- * @param $roles {string_commaSeparated} — Roles that the widget is applied to (when this parameter is empty then widget is applied to the all roles). Default: ''.
- * @param $templates {string_commaSeparated} — Templates IDs for which the widget is applying (empty value means the widget is applying to all templates). Default: ''.
- * @param $validAttrsForAllTags {string_commaSeparated} — Attributes that can be applied to all HTML tags. The others will be removed. Default: 'title,class'.
- * @param $validStyles {string_commaSeparated} — Valid styles that have not to be cut from the style attribute. Default: 'word-spacing'.
- * @param $validAttrs {string_JSON_object} — A JSON object containing valid attributes (set as comma separated values) which have not to be removed from corresponding HTML tags (set as keys). Default: '{"img":"src,alt,width,height","a":"href,target"}'.
+ * @param $params {array_associative|stdClass} — The object of params. @required
+ * @param $params['fields'] {string_commaSeparated} — The name(s) of the document fields (or TVs) which the widget is applied to. @required
+ * @param $params['validAttrs'] {string_JSON_object} — A JSON object containing valid attributes (set as comma separated values) which have not to be removed from corresponding HTML tags (set as keys). Default: '{"img":"src,alt,width,height","a":"href,target"}'.
+ * @param $params['validAttrsForAllTags'] {string_commaSeparated} — Attributes that can be applied to all HTML tags. The others will be removed. Default: 'title,class'.
+ * @param $params['validStyles'] {string_commaSeparated} — Valid styles that have not to be cut from the style attribute. Default: 'word-spacing'.
+ * @param $params['roles'] {string_commaSeparated} — Roles that the widget is applied to (when this parameter is empty then widget is applied to the all roles). Default: ''.
+ * @param $params['templates'] {string_commaSeparated} — Templates IDs for which the widget is applying (empty value means the widget is applying to all templates). Default: ''.
  * 
  * @event OnDocFormPrerender
  * @event OnDocFormRender
@@ -22,15 +24,37 @@
  * @copyright 2013–2014 DivanDesign {@link http://www.DivanDesign.biz }
  */
 
-function mm_ddHTMLCleaner(
-	$fields,
-	$roles = '',
-	$templates = '',
-	$validAttrsForAllTags = 'title,class',
-	$validStyles = 'word-spacing',
-	$validAttrs = '{"img":"src,alt,width,height","a":"href,target"}'
-){
-	if (!useThisRule($roles, $templates)){return;}
+function mm_ddHTMLCleaner($params){
+	//For backward compatibility
+	if (
+		!is_array($params) &&
+		!is_object($params)
+	){
+		//Convert ordered list of params to named
+		$params = ddTools::orderedParamsToNamed([
+			'paramsList' => func_get_args(),
+			'compliance' => [
+				'fields',
+				'roles',
+				'templates',
+				'validAttrsForAllTags',
+				'validStyles',
+				'validAttrs'
+			]
+		]);
+	}
+	
+	//Defaults
+	$params = (object) array_merge([
+// 		'fields' => '',
+		'validAttrs' => '{"img":"src,alt,width,height","a":"href,target"}',
+		'validAttrsForAllTags' => 'title,class',
+		'validStyles' => 'word-spacing',
+		'roles' => '',
+		'templates' => ''
+	], (array) $params);
+	
+	if (!useThisRule($params->roles, $params->templates)){return;}
 	
 	global $modx;
 	$e = &$modx->Event;
@@ -47,12 +71,12 @@ function mm_ddHTMLCleaner(
 		
 		if ($content['contentType'] != 'text/html'){return;}
 		
-		$fields = getTplMatchedFields($fields);
-		if ($fields == false){return;}
+		$params->fields = getTplMatchedFields($params->fields);
+		if ($params->fields == false){return;}
 		
 		$selectors = array();
 		
-		foreach ($fields as $field){
+		foreach ($params->fields as $field){
 			$selectors[] = $mm_fields[$field]['fieldtype'].'[name=\"'.$mm_fields[$field]['fieldname'].'\"]';
 		}
 		
@@ -61,9 +85,9 @@ function mm_ddHTMLCleaner(
 		$output .=
 '
 $j.ddMM.mm_ddHTMLCleaner.addInstance("'.implode(',', $selectors).'", {
-	validAttrsForAllTags: "'.$validAttrsForAllTags.'",
-	validAttrs: '.$validAttrs.',
-	validStyles: "'.$validStyles.'"
+	validAttrsForAllTags: "'.$params->validAttrsForAllTags.'",
+	validAttrs: '.$params->validAttrs.',
+	validStyles: "'.$params->validStyles.'"
 });
 ';
 		
