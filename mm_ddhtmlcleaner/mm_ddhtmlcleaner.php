@@ -49,7 +49,7 @@ function mm_ddHTMLCleaner($params){
 // 		'fields' => '',
 		'validAttrs' => '{"img":"src,alt,width,height","a":"href,target"}',
 		'validAttrsForAllTags' => 'title,class',
-		'validStyles' => 'word-spacing',
+		'validStyles' => 'word-spacing,margin,margin-top,margin-right,margin-bottom,margin-left,display',
 		'roles' => '',
 		'templates' => ''
 	], (array) $params);
