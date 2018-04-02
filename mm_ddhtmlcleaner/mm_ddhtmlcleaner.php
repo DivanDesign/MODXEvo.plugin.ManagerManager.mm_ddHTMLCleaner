@@ -1,16 +1,17 @@
 <?php
 /**
  * mm_ddHTMLCleaner
- * @version 1.0.4 (2014-03-14)
+ * @version 1.0.5 (2018-04-03)
  * 
  * @desc A widget for the plugin ManagerManager. It removes forbidden HTML attributes and styles from document fields and TVs when required.
  * 
  * @uses PHP >= 5.4.
- * @uses MODXEvo.plugin.ManagerManager >= 0.7.
+ * @uses MODXEvo.plugins.ManagerManager >= 0.7 {@link http://code.divandesign.biz/modx/managermanager }.
  * 
  * @param $params {array_associative|stdClass} — The object of params. @required
  * @param $params['fields'] {string_commaSeparated} — The name(s) of the document fields (or TVs) which the widget is applied to. @required
  * @param $params['validAttrs'] {string_JSON_object} — A JSON object containing valid attributes (set as comma separated values) which have not to be removed from corresponding HTML tags (set as keys). Default: '{"img":"src,alt,width,height","a":"href,target"}'.
+ * @param $params['validAttrs'][tagName] {string_commaSeparated} — Valid attributes (set as comma separated values) which have not to be removed from corresponding HTML tags (set as keys). Default: '{"img":"src,alt,width,height","a":"href,target"}'.
  * @param $params['validAttrsForAllTags'] {string_commaSeparated} — Attributes that can be applied to all HTML tags. The others will be removed. Default: 'title,class'.
  * @param $params['validStyles'] {string_commaSeparated} — Valid styles that have not to be cut from the style attribute. Default: 'word-spacing'.
  * @param $params['roles'] {string_commaSeparated} — Roles that the widget is applied to (when this parameter is empty then widget is applied to the all roles). Default: ''.
@@ -19,9 +20,9 @@
  * @event OnDocFormPrerender
  * @event OnDocFormRender
  * 
- * @link http://code.divandesign.biz/modx/mm_ddhtmlcleaner/1.0.4
+ * @link http://code.divandesign.biz/modx/mm_ddhtmlcleaner/1.0.5
  * 
- * @copyright 2013–2014 DivanDesign {@link http://www.DivanDesign.biz }
+ * @copyright 2013–2018 DivanDesign {@link http://www.DivanDesign.biz }
  */
 
 function mm_ddHTMLCleaner($params){
